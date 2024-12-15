@@ -7,7 +7,7 @@ import Tracks from './pages/Tracks';
 import Footer from './components/Footer';
 import About from './pages/About';
 import ContactUs from './pages/ContactUs';
-
+import RegistrationForm from "./pages/RegistrationForm";
 
 
 
@@ -16,7 +16,8 @@ function App() {
     
     <div className="App">
       <MyNavbar/> 
-      
+      <RegistrationForm/>
+
     <Router>
       <div className="App">
         {/* Define routes */}
