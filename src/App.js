@@ -4,7 +4,7 @@ import TitleBar from './components/TitleBar';
 import HomePage from './pages/HomePage';
 import MyNavbar from './components/Navbar';
 import Tracks from './pages/Tracks';
-import Footer from './pages/Footer';
+import Footer from './components/Footer';
 
 
 
