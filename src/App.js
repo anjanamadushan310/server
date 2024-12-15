@@ -1,10 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import TitleBar from './components/TitleBar';
 import HomePage from './pages/HomePage';
 import MyNavbar from './components/Navbar';
 import Tracks from './pages/Tracks';
 import Footer from './components/Footer';
+import About from './pages/About';
+import ContactUs from './pages/ContactUs';
+
 
 
 
@@ -14,7 +16,8 @@ function App() {
     <div className="App">
       <MyNavbar/> 
       
-        <Router>
+      
+    <Router>
       <div className="App">
         {/* Define routes */}
         <Routes>
@@ -23,9 +26,11 @@ function App() {
         </Routes>
       </div>
     </Router>
+    <About/>
     <Tracks/>
+    <ContactUs/>
     <Footer/>
-      
+   
       
       
     </div>
