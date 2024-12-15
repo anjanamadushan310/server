@@ -4,6 +4,7 @@ import TitleBar from './components/TitleBar';
 import HomePage from './pages/HomePage';
 import MyNavbar from './components/Navbar';
 import Tracks from './pages/Tracks';
+import Footer from './pages/Footer';
 
 
 
@@ -12,6 +13,7 @@ function App() {
     
     <div className="App">
       <MyNavbar/> 
+      
         <Router>
       <div className="App">
         {/* Define routes */}
@@ -21,9 +23,10 @@ function App() {
         </Routes>
       </div>
     </Router>
-    
-      <Tracks/>
-     
+    <Tracks/>
+    <Footer/>
+      
+      
       
     </div>
   );
