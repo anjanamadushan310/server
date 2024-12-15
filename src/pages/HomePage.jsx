@@ -1,9 +1,13 @@
 import React from 'react'
+import Newcarousel from '../components/Newcarousel'
+import Speackerscards from '../components/Speackerscards'
 
 export default function HomePage() {
   return (
     <div>
-   <h1>g</h1>
+      <Newcarousel/>
+      <Speackerscards/>
+   
     </div>
   )
 }
