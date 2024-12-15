@@ -1,4 +1,5 @@
 import React from 'react';
+import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import MyNavbar from './components/Navbar';
@@ -16,7 +17,6 @@ function App() {
     <div className="App">
       <MyNavbar/> 
       
-      
     <Router>
       <div className="App">
         {/* Define routes */}
@@ -28,7 +28,9 @@ function App() {
     </Router>
     <About/>
     <Tracks/>
+    
     <ContactUs/>
+    
     <Footer/>
    
       
