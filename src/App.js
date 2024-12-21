@@ -9,6 +9,7 @@ import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import RegistrationForm from "./pages/RegistrationForm";
 import LoginForm from './pages/LoginForm';
+import ModernNavbar from './components/ModernNavbar';
 
 
 
@@ -16,28 +17,27 @@ function App() {
   return (
     
     <div className="App">
-      <MyNavbar/> 
-     
+      
+      <ModernNavbar/>
+      
 
     <Router>
       <div className="App">
         {/* Define routes */}
         <Routes>
-          <Route path="/" element={<HomePage/>} />  {/* Home page route */}
-          <Route path="" element={<Tracks/>} />  {/* Tracks page route */}
+          <Route path="/home" element={<HomePage/>} />  {/* Home page route */}
+          <Route path="/about" element={<About/>} />  {/* Tracks page route */}
+          <Route path="/tracks" element={<Tracks/>} />  {/* Tracks page route */}
+          <Route path="/contact" element={<ContactUs/>} />  {/* Tracks page route */}
+          <Route path="/login" element={<LoginForm/>} />  {/* Tracks page route */}
+          <Route path="/join" element={<RegistrationForm/>} />  {/* Tracks page route */}
         </Routes>
       </div>
     </Router>
-    <About/>
-    <LoginForm/>
-
-    <Tracks/>
     
-    <ContactUs/>
-    
+   
     <Footer/>
    
-      
       
     </div>
   );

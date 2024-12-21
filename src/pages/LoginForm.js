@@ -21,7 +21,7 @@ export default function LoginForm() {
   return (
     <>
       {/* Modal component for popup */}
-      <Modal show={show} backdrop="static" keyboard={false} centered>
+      <Modal show={show} backdrop="static" keyboard={false} centered >
         {/* Modal Header with top color */}
         <Modal.Header
           style={{
