@@ -1,222 +1,325 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import {
-  Modal,
-  Button,
-  Form,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import React, { useState } from "react"; // Import React and useState for component state
+import { useForm } from "react-hook-form"; // Import useForm for form management
+import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS for styling
+import { Modal, Button, Form, Container, Row, Col } from "react-bootstrap"; // Import Bootstrap components
 
 export default function RegistrationForm() {
-    const [show, setShow] = useState(true); // State to control modal visibility
-    const [fileError, setFileError] = useState(""); // State to manage file validation error
-  
-    // useForm hook to manage form inputs and validation
-    const {
-      register, // Function to register input fields
-      handleSubmit, // Function to handle form submission
-      formState: { errors, isValid }, // Destructure form state: errors and isValid for validation
-    } = useForm({ mode: "all" }); // Validation mode set to trigger on input changes
-  
-    // Function to handle form submission
-    const onSubmit = (data) => {
-      console.log("Form Data: ", data); // Log the submitted form data
-      alert("Registration Successful!"); // Show success alert
-    };
-  
-    // Function to validate uploaded files
-    const handleFileValidation = (e) => {
-      const file = e.target.files[0]; // Get the selected file
-      // Check if file type is not allowed
-      if (file && !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
-        setFileError("Only PDF, JPG, or PNG files are allowed."); // Set file error message
-        e.target.value = ""; // Reset the file input
-      } else {
-        setFileError(""); // Clear file error
-      }
-    };
+  const [show, setShow] = useState(true); // State to control the visibility of the modal
+  const [fileError, setFileError] = useState(""); // State to store file validation errors
+
+  // Destructure methods and state from useForm
+  const {
+    register, // Function to register input fields
+    handleSubmit, // Function to handle form submission
+    watch, // Function to watch input values
+    formState: { errors, isValid }, // Access errors and form validity
+  } = useForm({ mode: "all" }); // Enable real-time validation
+
+  // Function to handle form submission
+  const onSubmit = (data) => {
+    console.log("Form Data: ", data); // Log form data to the console
+    alert("Registration Successful!"); // Show success alert
+  };
+
+  // Function to validate file input
+  const handleFileValidation = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    // Check if the file type is valid
+    if (file && !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
+      setFileError("Only PDF, JPG, or PNG files are allowed."); // Set error message
+      e.target.value = ""; // Clear the file input
+    } else {
+      setFileError(""); // Clear error if file is valid
+    }
+  };
+
+  const password = watch("password"); // Watch the password input value
 
   return (
     <div>
-     <Modal
-      show={show} // Show the modal
-      onHide={() => {}} // Prevent modal from closing
-      backdrop="static" // Lock the backdrop to prevent clicking outside
-      keyboard={false} // Disable ESC key to close modal
-      centered // Center the modal vertically
-    >
-      {/* Modal Header with title */}
-      <Modal.Header
-        style={{
-          backgroundColor: "#224B22", // Set background color to dark green
-          color: "white", // Set text color to white
-        }}
+      <Modal
+        show={show} // Control modal visibility
+        onHide={() => {}} // Disable close functionality
+        backdrop="static" // Prevent closing on outside click
+        keyboard={false} // Disable closing on pressing ESC
+        centered // Center the modal
       >
-        <Modal.Title>Registration Form</Modal.Title>
-      </Modal.Header>
+        <Modal.Header
+          style={{
+            backgroundColor: "#224B22", // Set background color
+            color: "white", // Set text color
+          }}
+        >
+          <Modal.Title>Registration Form</Modal.Title> {/* Modal title */}
+        </Modal.Header>
 
-      {/* Modal Body */}
-      <Modal.Body>
-        <Container>
-          {/* Form with submission handler */}
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Row>
-              {/* First Name Input */}
-              <Col md={6}>
-                <Form.Group controlId="firstName">
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    type="text" // Text input
-                    placeholder="Enter First Name" // Placeholder text
-                    {...register("firstName", { required: "First Name is required" })} // Register field with validation
-                  />
-                  {errors.firstName && (
-                    <small className="text-danger">{errors.firstName.message}</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
+        <Modal.Body>
+          <Container>
+            <Form onSubmit={handleSubmit(onSubmit)}> {/* Handle form submission */}
+              {/* First Name */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="firstName">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control
+                      type="text" // Text input
+                      placeholder="Enter First Name" // Placeholder text
+                      {...register("firstName", { required: "First Name is required" })} // Register input and set validation rules
+                    />
+                    {/* Display error message */}
+                    {errors.firstName && (
+                      <small className="text-danger">{errors.firstName.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+                
+                {/* Second Name */}
+                <Col md={6}>
+                  <Form.Group controlId="secondName">
+                    <Form.Label>Second Name</Form.Label>
+                    <Form.Control
+                      type="text" // Text input
+                      placeholder="Enter Second Name" // Placeholder text
+                      {...register("secondName", { required: "Second Name is required" })} // Register input and set validation rules
+                    />
+                    {/* Display error message */}
+                    {errors.secondName && (
+                      <small className="text-danger">{errors.secondName.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              {/* Second Name Input */}
-              <Col md={6}>
-                <Form.Group controlId="secondName">
-                  <Form.Label>Second Name</Form.Label>
-                  <Form.Control
-                    type="text" // Text input
-                    placeholder="Enter Second Name" // Placeholder text
-                    {...register("secondName", { required: "Second Name is required" })} // Register field with validation
-                  />
-                  {errors.secondName && (
-                    <small className="text-danger">{errors.secondName.message}</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Mobile Number */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="mobileNumber">
+                    <Form.Label>Mobile Number</Form.Label>
+                    <Form.Control
+                      type="tel" // Input for phone number
+                      placeholder="Enter Mobile Number" // Placeholder text
+                      {...register("mobileNumber", {
+                        required: "Mobile number is required", // Required validation
+                        pattern: {
+                          value: /^[0-9]{10,15}$/, // Regex for valid mobile numbers
+                          message: "Invalid mobile number", // Error message for invalid pattern
+                        },
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.mobileNumber && (
+                      <small className="text-danger">{errors.mobileNumber.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
 
-            <Row>
-              {/* Mobile Number Input */}
-              <Col md={6}>
-                <Form.Group controlId="mobileNumber">
-                  <Form.Label>Mobile Number</Form.Label>
-                  <Form.Control
-                    type="tel" // Telephone input
-                    placeholder="Enter Mobile Number" // Placeholder text
-                    {...register("mobileNumber", {
-                      required: "Mobile number is required", // Validation: Required
-                      pattern: {
-                        value: /^[0-9]{10,15}$/, // Pattern for numeric mobile number
-                        message: "Invalid mobile number", // Error message for invalid input
-                      },
-                    })}
-                  />
-                  {errors.mobileNumber && (
-                    <small className="text-danger">{errors.mobileNumber.message}</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
+                {/* Email */}
+                <Col md={6}>
+                  <Form.Group controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email" // Input for email
+                      placeholder="Enter Email" // Placeholder text
+                      {...register("email", {
+                        required: "Email is required", // Required validation
+                        pattern: {
+                          value: /^\S+@\S+$/i, // Regex for valid email
+                          message: "Invalid email format", // Error message for invalid pattern
+                        },
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.email && (
+                      <small className="text-danger">{errors.email.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              {/* Email Input */}
-              <Col md={6}>
-                <Form.Group controlId="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email" // Email input
-                    placeholder="Enter Email" // Placeholder text
-                    {...register("email", {
-                      required: "Email is required", // Validation: Required
-                      pattern: {
-                        value: /^\S+@\S+$/i, // Email format regex
-                        message: "Invalid email format", // Error message for invalid email
-                      },
-                    })}
-                  />
-                  {errors.email && (
-                    <small className="text-danger">{errors.email.message}</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Password */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="password">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                      type="password" // Password input
+                      placeholder="Enter Password" // Placeholder text
+                      {...register("password", {
+                        required: "Password is required", // Required validation
+                        minLength: {
+                          value: 6, // Minimum length validation
+                          message: "Password must be at least 6 characters", // Error message
+                        },
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.password && (
+                      <small className="text-danger">{errors.password.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
 
-            <Row>
-              {/* Password Input */}
-              <Col md={6}>
-                <Form.Group controlId="password">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password" // Password input
-                    placeholder="Enter Password" // Placeholder text
-                    {...register("password", {
-                      required: "Password is required", // Validation: Required
-                      minLength: {
-                        value: 6, // Minimum length of 6
-                        message: "Password must be at least 6 characters", // Error message
-                      },
-                    })}
-                  />
-                  {errors.password && (
-                    <small className="text-danger">{errors.password.message}</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
+                {/* Confirm Password */}
+                <Col md={6}>
+                  <Form.Group controlId="confirmPassword">
+                    <Form.Label>Re-Password</Form.Label>
+                    <Form.Control
+                      type="password" // Password input
+                      placeholder="Re-enter Password" // Placeholder text
+                      {...register("confirmPassword", {
+                        required: "Re-Password is required", // Required validation
+                        validate: (value) =>
+                          value === password || "Passwords do not match", // Custom validation for matching passwords
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.confirmPassword && (
+                      <small className="text-danger">{errors.confirmPassword.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-              {/* Participant Category Input */}
-              <Col md={6}>
-                <Form.Group controlId="category">
-                  <Form.Label>Participant Category</Form.Label>
-                  <Form.Control as="select" {...register("category", { required: true })}>
-                    <option value="">Select Category</option> {/* Default option */}
-                    <option value="1">Category 1</option> {/* Option 1 */}
-                    <option value="2">Category 2</option> {/* Option 2 */}
-                    <option value="3">Category 3</option> {/* Option 3 */}
-                  </Form.Control>
-                  {errors.category && (
-                    <small className="text-danger">Category is required</small> // Show validation error
-                  )}
-                </Form.Group>
-              </Col>
-            </Row>
+              {/* Gender */}
+              <Row>
+                <Col md={12}>
+                  <Form.Group controlId="gender">
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Control
+                      as="select" // Dropdown input for gender
+                      {...register("gender", { required: "Gender is required" })} // Register input and set validation rules
+                    >
+                      <option value="">Select Gender</option> {/* Placeholder option */}
+                      <option value="male">Male</option> {/* Male option */}
+                      <option value="female">Female</option> {/* Female option */}
+                      <option value="other">Other</option> {/* Other option */}
+                    </Form.Control>
+                    {/* Display error message */}
+                    {errors.gender && (
+                      <small className="text-danger">{errors.gender.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* Vegetarian Preference */}
-            <Form.Group controlId="vegetarian">
-              <Form.Label>Vegetarian?</Form.Label>
-              <Form.Control as="select" {...register("vegetarian", { required: true })}>
-                <option value="">Select</option> {/* Default option */}
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-              {errors.vegetarian && (
-                <small className="text-danger">Please specify vegetarian preference</small> // Validation message
-              )}
-            </Form.Group>
+              {/* Vegetarian */}
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="vegetarian">
+                    <Form.Label>Are you Vegetarian?</Form.Label>
+                    <div>
+                      {/* Radio button for vegetarian */}
+                      <Form.Check
+                        type="radio"
+                        label="Vegetarian"
+                        value="vegetarian"
+                        {...register("vegetarian", { required: "Please select an option" })}
+                      />
+                      {/* Radio button for non-vegetarian */}
+                      <Form.Check
+                        type="radio"
+                        label="Non-Vegetarian"
+                        value="non-vegetarian"
+                        {...register("vegetarian", { required: "Please select an option" })}
+                      />
+                    </div>
+                    {/* Display error message */}
+                    {errors.vegetarian && (
+                      <small className="text-danger">{errors.vegetarian.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* Payment Receipt Upload */}
-            <Form.Group controlId="paymentReceipt">
-              <Form.Label>Upload Payment Receipt (PDF, JPG, PNG)</Form.Label>
-              <Form.Control
-                type="file" // File input
-                accept=".jpg,.jpeg,.png,.pdf" // Accepted file types
-                {...register("paymentReceipt", { required: "Payment receipt is required" })}
-                onChange={handleFileValidation} // Custom file validation function
-              />
-              {fileError && <small className="text-danger">{fileError}</small>} {/* Show file error */}
-            </Form.Group>
+              {/* Address */}
+              <Row>
+                <Col md={12}>
+                  <Form.Group controlId="address">
+                    <Form.Label>Address</Form.Label>
+                    <Form.Control
+                      as="textarea" // Multi-line text input
+                      rows={3} // Set number of rows
+                      placeholder="Enter Address" // Placeholder text
+                      {...register("address", {
+                        required: "Address is required", // Required validation
+                        minLength: {
+                          value: 10, // Minimum length validation
+                          message: "Address must be at least 10 characters", // Error message
+                        },
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.address && (
+                      <small className="text-danger">{errors.address.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
 
-            {/* Submit Button */}
-            <Button
-              type="submit" // Submit button
-              disabled={!isValid || fileError} // Disabled until all fields are valid
-              className="w-100 mt-3" // Full-width button with margin
-              style={{ backgroundColor: "#006400", borderColor: "#006400" }} // Green button
-            >
-              Submit
-            </Button>
-          </Form>
-        </Container>
-      </Modal.Body>
-    </Modal>
+              {/* Country */}
+              <Row>
+                <Col md={12}>
+                  <Form.Group controlId="country">
+                    <Form.Label>Country</Form.Label>
+                    <Form.Control
+                      type="text" // Text input for country
+                      placeholder="Enter Country" // Placeholder text
+                      {...register("country", { required: "Country is required" })} // Register input and set validation rules
+                    />
+                    {/* Display error message */}
+                    {errors.country && (
+                      <small className="text-danger">{errors.country.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* NIC or Passport Number */}
+              <Row>
+                <Col md={12}>
+                  <Form.Group controlId="idOrPassport">
+                    <Form.Label>NIC or Passport Number</Form.Label>
+                    <Form.Control
+                      type="text" // Text input for NIC or passport
+                      placeholder="Enter NIC or Passport Number" // Placeholder text
+                      {...register("idOrPassport", {
+                        required: "NIC or Passport Number is required", // Required validation
+                      })}
+                    />
+                    {/* Display error message */}
+                    {errors.idOrPassport && (
+                      <small className="text-danger">{errors.idOrPassport.message}</small>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* File Upload */}
+              <Form.Group controlId="paymentReceipt">
+                <Form.Label>Upload Payment Receipt (PDF, JPG, PNG)</Form.Label>
+                <Form.Control
+                  type="file" // File input
+                  accept=".jpg,.jpeg,.png,.pdf" // Allowed file types
+                  {...register("paymentReceipt", { required: "Payment receipt is required" })}
+                  onChange={handleFileValidation} // Call file validation function
+                />
+                {/* Display error message */}
+                {fileError && <small className="text-danger">{fileError}</small>}
+              </Form.Group>
+
+              {/* Submit Button */}
+              <Button
+                type="submit" // Submit form
+                disabled={!isValid || fileError} // Disable button if form is invalid or file error exists
+                className="w-100 mt-3" // Full width with margin-top
+                style={{ backgroundColor: "#006400", borderColor: "#006400" }} // Custom styles
+              >
+                Submit
+              </Button>
+            </Form>
+          </Container>
+        </Modal.Body>
+      </Modal>
     </div>
-  )
+  );
 }
