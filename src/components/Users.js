@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState , useEffect } from 'react'
 import axios from 'axios';
 import User from './User';
 
@@ -19,11 +19,11 @@ export default function Users() {
     },[])
 
     
-    
-    
+  
   return (
+    <div><h1>list j </h1>
     <div>
-      <h1>list j </h1>
+      
      
       {users && users.map((user, i) => (
         <div key ={i}>
@@ -34,6 +34,7 @@ export default function Users() {
 
       ))}
        
+    </div>
     </div>
   )
 }
