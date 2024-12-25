@@ -10,6 +10,7 @@ import ContactUs from './pages/ContactUs';
 import RegistrationForm from "./pages/RegistrationForm";
 import LoginForm from './pages/LoginForm';
 import ModernNavbar from './components/ModernNavbar';
+import AdminDashboard from './pages/AdminDashboard';
 
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/contact" element={<ContactUs/>} />  {/* Tracks page route */}
           <Route path="/login" element={<LoginForm/>} />  {/* Tracks page route */}
           <Route path="/join" element={<RegistrationForm/>} />  {/* Tracks page route */}
+          <Route path="/Admin" element={<AdminDashboard/>} />  {/* Tracks page route */}
         </Routes>
       </div>
     </Router>

@@ -18,7 +18,7 @@ const ModernNavbar = () => {
     >
       <Container>
         {/* Logo and site name */}
-        <Navbar.Brand href="#home" style={{ fontWeight: 'bold', color: 'white' }}>
+        <Navbar.Brand href="/Admin" style={{ fontWeight: 'bold', color: 'white' }}>
           <img
             src="https://via.placeholder.com/40" // Placeholder for the site logo (replace with your logo)
             alt="Site Logo"

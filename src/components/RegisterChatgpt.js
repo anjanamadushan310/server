@@ -1,87 +1,68 @@
 import React, { useState } from "react"; // Import React and useState for component state
 import { useForm } from "react-hook-form"; // Import useForm for form management
-import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS for styling
 import { Modal, Button, Form, Container, Row, Col } from "react-bootstrap"; // Import Bootstrap components
-import axios from "axios";
-
+import axios from "axios"; // Import axios for API requests
 
 export default function RegistrationForm() {
   const [show, setShow] = useState(true); // State to control the visibility of the modal
   const [fileError, setFileError] = useState(""); // State to store file validation errors
-  
-   // Destructure methods and state from useForm
-   const {
+  const [loading, setLoading] = useState(false); // State to indicate loading status
+  const [responseMessage, setResponseMessage] = useState(""); // State to display server responses
+  const [formValues, setFormValues] = useState({}); // State to store form values
+
+  // Destructure methods and state from useForm
+  const {
     register, // Function to register input fields
-     handleSubmit,
+    handleSubmit, // Function to handle form submission
     watch, // Function to watch input values
     formState: { errors, isValid }, // Access errors and form validity
   } = useForm({ mode: "all" }); // Enable real-time validation
 
-  // registration
-    const navigate = useNavigate();
-    const [user,setUser] = useState({
-            firstName: "",
-            secondName: "",
-            mobileNumber: "",
-            email: "",
-            password: "",
-            country: "",
-            idOrPassport: "",
-            participantCategory: "",
-            vegetarian: "",
-            address: "",
-            paymentReceipt: "",
-    });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
 
-    const handleInputChange =(e) => {
-        const {name,value} = e.target;
-        setUser((prevUser) => ({...prevUser,[name]:value}));
-    };
+  // Function to handle form submission
+  const onSubmit = async (data) => {
+    console.log("Form Data: ", data); // Log form data to the console
+    alert("Registration Successful!"); // Show success alert
 
-    const onSubmit = async (data) => {
-      try {
-        await axios.post("http://localhost:5000/register", data);
-        alert("Registration Successful!");
-        navigate("/home");
-      } catch (err) {
-        alert(err.message);
-      }
-    };
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
 
-    const sendRequest = async() => {
-        await axios.post("http://localhost:5000/register",{
+    try {
+      setLoading(true);
+      const response = await axios.post("http://localhost:5000/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-            firstName: String(user.firstName),
-            secondName: String(user.secondName),
-            mobileNumber: String(user.mobileNumber),
-            email: String(user.email),
-            password: String(user.password),
-            country: String(user.country),
-            idOrPassport: String(user.idOrPassport),
-            participantCategory: String(user.participantCategory),
-            vegetarian: String(user.vegetarian),
-            address: String(user.address),
-            paymentReceipt: String(user.paymentReceipt),
-            
+      // Display success message
+      setResponseMessage(response.data.message || "Registration Successful!");
+    } catch (error) {
+      // Display error message
+      setResponseMessage(
+        error.response?.data?.message || "An error occurred during registration."
+      );
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
 
-        })
-        .then((res) => res.data);
-    }; 
-
-
- 
-
- 
   // Function to validate file input
   const handleFileValidation = (e) => {
     const file = e.target.files[0]; // Get the selected file
-    // Check if the file type is valid
     if (file && !["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
       setFileError("Only PDF, JPG, or PNG files are allowed."); // Set error message
       e.target.value = ""; // Clear the file input
     } else {
       setFileError(""); // Clear error if file is valid
+      handleInputChange(e);
     }
   };
 
@@ -117,7 +98,7 @@ export default function RegistrationForm() {
                       type="text" // Text input
                       placeholder="Enter First Name" // Placeholder text
                       {...register("firstName", { required: "First Name is required" })} // Register input and set validation rules
-                      value={user.firstName}
+                      value={formValues.firstName || ""}
                       onChange={handleInputChange}
                       name="firstName"
                     />
@@ -127,20 +108,18 @@ export default function RegistrationForm() {
                     )}
                   </Form.Group>
                 </Col>
-                
                 {/* Second Name */}
                 <Col md={6}>
                   <Form.Group controlId="secondName">
                     <Form.Label>Second Name</Form.Label>
                     <Form.Control
-                      type="text" // Text input
-                      placeholder="Enter Second Name" // Placeholder text
-                      {...register("secondName", { required: "Second Name is required" })} // Register input and set validation rules
-                      value={user.secondName}
+                      type="text"
+                      placeholder="Enter Second Name"
+                      {...register("secondName", { required: "Second Name is required" })}
+                      value={formValues.secondName || ""}
                       onChange={handleInputChange}
                       name="secondName"
                     />
-                    {/* Display error message */}
                     {errors.secondName && (
                       <small className="text-danger">{errors.secondName.message}</small>
                     )}
@@ -154,45 +133,42 @@ export default function RegistrationForm() {
                   <Form.Group controlId="mobileNumber">
                     <Form.Label>Mobile Number</Form.Label>
                     <Form.Control
-                      type="tel" // Input for phone number
-                      placeholder="Enter Mobile Number" // Placeholder text
+                      type="tel"
+                      placeholder="Enter Mobile Number"
                       {...register("mobileNumber", {
-                        required: "Mobile number is required", // Required validation
+                        required: "Mobile number is required",
                         pattern: {
-                          value: /^[0-9]{10,15}$/, // Regex for valid mobile numbers
-                          message: "Invalid mobile number", // Error message for invalid pattern
+                          value: /^[0-9]{10,15}$/,
+                          message: "Invalid mobile number",
                         },
                       })}
-                      value={user.mobileNumber}
+                      value={formValues.mobileNumber || ""}
                       onChange={handleInputChange}
                       name="mobileNumber"
                     />
-                    {/* Display error message */}
                     {errors.mobileNumber && (
                       <small className="text-danger">{errors.mobileNumber.message}</small>
                     )}
                   </Form.Group>
                 </Col>
-
                 {/* Email */}
                 <Col md={6}>
                   <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
                     <Form.Control
-                      type="email" // Input for email
-                      placeholder="Enter Email" // Placeholder text
+                      type="email"
+                      placeholder="Enter Email"
                       {...register("email", {
-                        required: "Email is required", // Required validation
+                        required: "Email is required",
                         pattern: {
-                          value: /^\S+@\S+$/i, // Regex for valid email
-                          message: "Invalid email format", // Error message for invalid pattern
+                          value: /^\S+@\S+$/i,
+                          message: "Invalid email format",
                         },
                       })}
-                      value={user.email}
+                      value={formValues.email || ""}
                       onChange={handleInputChange}
                       name="email"
                     />
-                    {/* Display error message */}
                     {errors.email && (
                       <small className="text-danger">{errors.email.message}</small>
                     )}
@@ -206,20 +182,19 @@ export default function RegistrationForm() {
                   <Form.Group controlId="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
-                      type="password" // Password input
-                      placeholder="Enter Password" // Placeholder text
+                      type="password"
+                      placeholder="Enter Password"
                       {...register("password", {
-                        required: "Password is required", // Required validation
+                        required: "Password is required",
                         minLength: {
-                          value: 6, // Minimum length validation
-                          message: "Password must be at least 6 characters", // Error message
+                          value: 6,
+                          message: "Password must be at least 6 characters",
                         },
                       })}
-                      value={user.password}
+                      value={formValues.password || ""}
                       onChange={handleInputChange}
                       name="password"
                     />
-                    {/* Display error message */}
                     {errors.password && (
                       <small className="text-danger">{errors.password.message}</small>
                     )}
@@ -231,35 +206,37 @@ export default function RegistrationForm() {
                   <Form.Group controlId="confirmPassword">
                     <Form.Label>Re-Password</Form.Label>
                     <Form.Control
-                      type="password" // Password input
-                      placeholder="Re-enter Password" // Placeholder text
+                      type="password"
+                      placeholder="Re-enter Password"
                       {...register("confirmPassword", {
-                        required: "Re-Password is required", // Required validation
+                        required: "Re-Password is required",
                         validate: (value) =>
-                          value === password || "Passwords do not match", // Custom validation for matching passwords
+                          value === password || "Passwords do not match",
                       })}
+                      value={formValues.confirmPassword || ""}
+                      onChange={handleInputChange}
+                      name="confirmPassword"
                     />
-                    {/* Display error message */}
                     {errors.confirmPassword && (
                       <small className="text-danger">{errors.confirmPassword.message}</small>
                     )}
                   </Form.Group>
                 </Col>
               </Row>
-                {/* Country */}
+
+              {/* Country */}
               <Row>
                 <Col md={12}>
                   <Form.Group controlId="country">
                     <Form.Label>Country</Form.Label>
                     <Form.Control
-                      type="text" // Text input for country
-                      placeholder="Enter Country" // Placeholder text
-                      {...register("country", { required: "Country is required" })} // Register input and set validation rules
-                      value={user.country}
+                      type="text"
+                      placeholder="Enter Country"
+                      {...register("country", { required: "Country is required" })}
+                      value={formValues.country || ""}
                       onChange={handleInputChange}
                       name="country"
                     />
-                    {/* Display error message */}
                     {errors.country && (
                       <small className="text-danger">{errors.country.message}</small>
                     )}
@@ -273,41 +250,37 @@ export default function RegistrationForm() {
                   <Form.Group controlId="idOrPassport">
                     <Form.Label>NIC or Passport Number</Form.Label>
                     <Form.Control
-                      type="text" // Text input for NIC or passport
-                      placeholder="Enter NIC or Passport Number" // Placeholder text
+                      type="text"
+                      placeholder="Enter NIC or Passport Number"
                       {...register("idOrPassport", {
-                        required: "NIC or Passport Number is required", // Required validation
+                        required: "NIC or Passport Number is required",
                       })}
-                      value={user.idOrPassport}
-                      onChange={handleInputChange}
-                      name="idOrPassport"
+                     
                     />
-                    {/* Display error message */}
                     {errors.idOrPassport && (
                       <small className="text-danger">{errors.idOrPassport.message}</small>
                     )}
                   </Form.Group>
                 </Col>
               </Row>
-              
-              {/* participant category */}
+
+              {/* Participant Category */}
               <Row>
                 <Col md={12}>
                   <Form.Group controlId="gender">
                     <Form.Label>Participant Category</Form.Label>
                     <Form.Control
-                      as="select" // Dropdown input for Participant Categoryr
-                      {...register("Participant Category", { required: "Participant Category is required" })} // Register input and set validation rules
-                      value={user.participantCategory}
+                      as="select"
+                      {...register("gender", { required: "Gender is required" })}
+                      value={formValues.gender || ""}
                       onChange={handleInputChange}
-                      name="participantCategory"
+                      name="gender"
                     >
-                      <option value="">Select Participant Category</option> {/* Placeholder option */}
-                      <option value="male">Host</option> {/* option */}
-                      <option value="female">Co-Host</option> 
-                      <option value="other">Participent</option> 
+                      <option value="">Select Participant Category</option>
+                      <option value="male">Host</option>
+                      <option value="female">Co-Host</option>
+                      <option value="other">Participant</option>
                     </Form.Control>
-                    {/* Display error message */}
                     {errors.gender && (
                       <small className="text-danger">{errors.gender.message}</small>
                     )}
@@ -321,25 +294,25 @@ export default function RegistrationForm() {
                   <Form.Group controlId="vegetarian">
                     <Form.Label>Are you Vegetarian?</Form.Label>
                     <div>
-                      {/* Radio button for vegetarian */}
                       <Form.Check
                         type="radio"
                         label="Vegetarian"
                         value="vegetarian"
                         {...register("vegetarian", { required: "Please select an option" })}
+                        checked={formValues.vegetarian === "vegetarian"}
+                        onChange={handleInputChange}
+                        name="vegetarian"
                       />
-                      {/* Radio button for non-vegetarian */}
                       <Form.Check
                         type="radio"
                         label="Non-Vegetarian"
                         value="non-vegetarian"
                         {...register("vegetarian", { required: "Please select an option" })}
-                        checked={user.vegetarian === "non-vegetarian"}
+                        checked={formValues.vegetarian === "non-vegetarian"}
                         onChange={handleInputChange}
                         name="vegetarian"
                       />
                     </div>
-                    {/* Display error message */}
                     {errors.vegetarian && (
                       <small className="text-danger">{errors.vegetarian.message}</small>
                     )}
@@ -353,21 +326,20 @@ export default function RegistrationForm() {
                   <Form.Group controlId="address">
                     <Form.Label>Address</Form.Label>
                     <Form.Control
-                      as="textarea" // Multi-line text input
-                      rows={3} // Set number of rows
-                      placeholder="Enter Address" // Placeholder text
+                      as="textarea"
+                      rows={3}
+                      placeholder="Enter Address"
                       {...register("address", {
-                        required: "Address is required", // Required validation
+                        required: "Address is required",
                         minLength: {
-                          value: 10, // Minimum length validation
-                          message: "Address must be at least 10 characters", // Error message
+                          value: 10,
+                          message: "Address must be at least 10 characters",
                         },
                       })}
-                      value={user.address}
+                      value={formValues.address || ""}
                       onChange={handleInputChange}
                       name="address"
                     />
-                    {/* Display error message */}
                     {errors.address && (
                       <small className="text-danger">{errors.address.message}</small>
                     )}
@@ -375,27 +347,24 @@ export default function RegistrationForm() {
                 </Col>
               </Row>
 
-              
-
               {/* File Upload */}
               <Form.Group controlId="paymentReceipt">
                 <Form.Label>Upload Payment Receipt (PDF, JPG, PNG)</Form.Label>
                 <Form.Control
-                  type="file" // File input
-                  accept=".jpg,.jpeg,.png,.pdf" // Allowed file types
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.pdf"
                   {...register("paymentReceipt", { required: "Payment receipt is required" })}
-                  onChange={handleFileValidation} // Call file validation function
+                  onChange={handleFileValidation}
                 />
-                {/* Display error message */}
                 {fileError && <small className="text-danger">{fileError}</small>}
               </Form.Group>
 
               {/* Submit Button */}
               <Button
-                type="submit" // Submit form
-                disabled={!isValid || fileError} // Disable button if form is invalid or file error exists
-                className="w-100 mt-3" // Full width with margin-top
-                style={{ backgroundColor: "#006400", borderColor: "#006400" }} // Custom styles
+                type="submit"
+                disabled={!isValid || fileError}
+                className="w-100 mt-3"
+                style={{ backgroundColor: "#006400", borderColor: "#006400" }}
               >
                 Submit
               </Button>
