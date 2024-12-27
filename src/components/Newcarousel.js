@@ -6,17 +6,17 @@ import { Carousel } from 'react-bootstrap';
 
 export default function Newcarousel() {
   return (
-    <Carousel interval={3000} fade>
+    <Carousel interval={2000} fade>
       {/* Carousel Item 1 */}
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://via.placeholder.com/800x400/0000FF/808080?text=Image+1"
+          src="https://irc.itum.mrt.ac.lk/slider.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
-          <h3>First Image</h3>
-          <p>This is the first image in the carousel.</p>
+          <h3>IITUM IRC 2024</h3>
+         
         </Carousel.Caption>
       </Carousel.Item>
 
@@ -24,12 +24,12 @@ export default function Newcarousel() {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://via.placeholder.com/800x400/FF5733/808080?text=Image+2"
+          src="https://itum.mrt.ac.lk/sites/default/files/2024-12/IRC-2024-1-0614.jpg"
           alt="Second slide"
         />
         <Carousel.Caption>
-          <h3>Second Image</h3>
-          <p>This is the second image in the carousel.</p>
+          <h3>IITUM IRC 2024</h3>
+          
         </Carousel.Caption>
       </Carousel.Item>
 
@@ -37,12 +37,12 @@ export default function Newcarousel() {
       <Carousel.Item>
         <img
           className="d-block w-100"
-          src="https://via.placeholder.com/800x400/4CAF50/808080?text=Image+3"
+          src="https://itum.mrt.ac.lk/sites/default/files/2024-12/IRC-2024-1-0841.jpg"
           alt="Third slide"
         />
         <Carousel.Caption>
-          <h3>Third Image</h3>
-          <p>This is the third image in the carousel.</p>
+          <h3>IITUM IRC 2024</h3>
+         
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

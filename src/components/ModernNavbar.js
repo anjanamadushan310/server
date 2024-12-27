@@ -18,13 +18,13 @@ const ModernNavbar = () => {
     >
       <Container>
         {/* Logo and site name */}
-        <Navbar.Brand href="/Admin" style={{ fontWeight: 'bold', color: 'white' }}>
+        <Navbar.Brand href="/" style={{ fontWeight: 'bold', color: 'white' }}>
           <img
-            src="https://via.placeholder.com/40" // Placeholder for the site logo (replace with your logo)
+            src="/itum.png" // Placeholder for the site logo 
             alt="Site Logo"
-            style={{ marginRight: '10px', borderRadius: '50%' }} // Style for the logo
+            style={{ marginRight: '10px', borderRadius: '0%' }} // Style for the logo
           />
-          Site Name
+          IRC ITUM 
         </Navbar.Brand>
 
         {/* Toggle button for small screens */}
@@ -34,7 +34,7 @@ const ModernNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {/* Navigation links */}
-            <Nav.Link href="/home" style={{ color: 'white', fontWeight: 'bold' }}>
+            <Nav.Link href="/" style={{ color: 'white', fontWeight: 'bold' }}>
               Home
             </Nav.Link>
             <Nav.Link href="/about" style={{ color: 'white', fontWeight: 'bold' }}>
@@ -54,8 +54,10 @@ const ModernNavbar = () => {
               menuVariant="dark"
               style={{ color: 'white', fontWeight: 'bold' }}
             >
-              <NavDropdown.Item href="#action1">Brochure</NavDropdown.Item>
-              <NavDropdown.Item href="#action2">Rules</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/Correction_Report.docx">Correction report</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/CR_Copy_Ext_Abs_Format.docx">Guidelines for camera ready copy of extended abstract formatting</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/Author_Consent_Form.docx">Author consent form</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/ITUMRC-Presentation-Template.pptx">Powerpoint presentation template</NavDropdown.Item>
             </NavDropdown>
 
             {/* Dropdown menu for Past Years */}
@@ -65,9 +67,9 @@ const ModernNavbar = () => {
               menuVariant="dark"
               style={{ color: 'white', fontWeight: 'bold' }}
             >
-              <NavDropdown.Item href="#action3">2023</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">2022</NavDropdown.Item>
-              <NavDropdown.Item href="#action5">2021</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/ITUMRS2023/index.html">2023</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/ITUMRS2022/index.html">2022</NavDropdown.Item>
+              <NavDropdown.Item href="https://irc.itum.mrt.ac.lk/ITUMRS2021/index.html">2021</NavDropdown.Item>
             </NavDropdown>
           </Nav>
 
